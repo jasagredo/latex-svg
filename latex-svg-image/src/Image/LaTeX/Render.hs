@@ -29,7 +29,7 @@ import Control.Monad.IO.Class     (MonadIO (..))
 import Control.Monad.Trans.Except (ExceptT (..), runExceptT, throwE, withExceptT)
 import Data.Bitraversable         (bimapM)
 import Data.Char                  (isSpace)
-import Data.List                  (foldl', isPrefixOf, sortOn, stripPrefix)
+import Data.List                  (foldl', isPrefixOf, sortOn, stripPrefix, uncons)
 import Data.Maybe                 (fromMaybe, maybeToList)
 import Numeric                    (showFFloat)
 import System.Exit                (ExitCode (..))
@@ -189,7 +189,10 @@ imageForFormula EnvironmentOptions {..} FormulaOptions {..} eqn =
     latexFontSize'
         | latexFontSize < 8  = 8
         | latexFontSize > 20 = 20
-        | otherwise          = head $ sortOn (\s -> abs (s - latexFontSize)) sizes
+        | otherwise          = fst
+                             $ maybe (error "impossible") id
+                             $ uncons
+                             $ sortOn (\s -> abs (s - latexFontSize)) sizes
 
     sizes :: [Int]
     sizes = [8,9,10,11,12,14,17,20]
