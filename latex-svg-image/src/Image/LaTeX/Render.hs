@@ -28,7 +28,7 @@ import Control.Monad.IO.Class     (MonadIO (..))
 import Control.Monad.Trans.Except (ExceptT (..), runExceptT, throwE, withExceptT)
 import Data.Bitraversable         (bimapM)
 import Data.Char                  (isSpace)
-import Data.List                  (foldl', isPrefixOf, sortOn, stripPrefix)
+import Data.List as List          (foldl', isPrefixOf, sortOn, stripPrefix)
 import Data.Maybe                 (fromMaybe, maybeToList)
 import Numeric                    (showFFloat)
 import System.Exit                (ExitCode (..))
@@ -344,11 +344,11 @@ getBaseline' sfx = case P.parse parser "<input>" sfx of
     float2 = P.char '.' *> fraction
 
     decimal :: P.Parser Double
-    decimal = foldl' (\x d ->  10*x + digitToInt d) 0
+    decimal = List.foldl' (\x d ->  10*x + digitToInt d) 0
         <$> digits1
 
     fraction :: P.Parser Double
-    fraction = uncurry (/) . foldl' (\(x,n) d -> (10*x + digitToInt d,n*10)) (0,1)
+    fraction = uncurry (/) . List.foldl' (\(x,n) d -> (10*x + digitToInt d,n*10)) (0,1)
         <$> digits1
 
     digits1 = some P.digit

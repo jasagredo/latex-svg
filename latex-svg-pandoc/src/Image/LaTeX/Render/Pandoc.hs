@@ -1,5 +1,6 @@
 {-# LANGUAGE GADTs             #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeOperators     #-}
 module Image.LaTeX.Render.Pandoc (
     -- * SVG
     convertFormulaSvgInline,
